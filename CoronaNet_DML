@@ -1,0 +1,426 @@
+-- MySQL dump 10.13  Distrib 8.0.24, for macos11 (x86_64)
+--
+-- Host: localhost    Database: CoronaNet
+-- ------------------------------------------------------
+-- Server version	8.0.24
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `Beslutningstagere`
+--
+
+DROP TABLE IF EXISTS `Beslutningstagere`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Beslutningstagere` (
+  `idBeslutningstagere` int NOT NULL,
+  `BrugerID` int NOT NULL,
+  `Fuldenavn` varchar(45) NOT NULL,
+  `Stilling` varchar(45) NOT NULL,
+  PRIMARY KEY (`idBeslutningstagere`),
+  UNIQUE KEY `idBeslutningstagere_UNIQUE` (`idBeslutningstagere`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Beslutningstagere`
+--
+
+LOCK TABLES `Beslutningstagere` WRITE;
+/*!40000 ALTER TABLE `Beslutningstagere` DISABLE KEYS */;
+INSERT INTO `Beslutningstagere` VALUES (1,7497,'Bente Rasmussen','sundhedsrådet'),(2,2746,'Claudia Mogensen','Bestyrelse i sundhedsstyrelsen'),(3,2793,'Dorthe Østergaard','Bestyrelse i sundhedsstyrelsen'),(4,7423,'Kristoffer Smith','Minister'),(5,9384,'Henrik Pilgaard','Konsulent'),(6,1230,'Zeinab Al','konsulent'),(7,1111,'Rasmus Petersen','statsminister'),(8,2222,'Ali Abdi ','Næstformand'),(9,3542,'Svend Eriksen','Direktør for sundhedsstyrelsen'),(10,2019,'Pia Paludan','Rådgiver');
+/*!40000 ALTER TABLE `Beslutningstagere` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `CoronaData`
+--
+
+DROP TABLE IF EXISTS `CoronaData`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `CoronaData` (
+  `idCoronaData` int NOT NULL,
+  `Testresultat` varchar(45) NOT NULL,
+  `CoronaType` varchar(45) NOT NULL,
+  `Teststed` varchar(45) NOT NULL,
+  `Dato` date NOT NULL,
+  `FK_idpatient2` int DEFAULT NULL,
+  PRIMARY KEY (`idCoronaData`),
+  UNIQUE KEY `idCoronaData_UNIQUE` (`idCoronaData`),
+  KEY `FK_idpatient2_idx` (`FK_idpatient2`),
+  CONSTRAINT `FK_idpatient2` FOREIGN KEY (`FK_idpatient2`) REFERENCES `Patient` (`idPatient`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `CoronaData`
+--
+
+LOCK TABLES `CoronaData` WRITE;
+/*!40000 ALTER TABLE `CoronaData` DISABLE KEYS */;
+/*!40000 ALTER TABLE `CoronaData` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Geolokation`
+--
+
+DROP TABLE IF EXISTS `Geolokation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Geolokation` (
+  `idGeolokation` int NOT NULL,
+  `Adresse` varchar(45) NOT NULL,
+  `Postnr.` int NOT NULL,
+  `Region` varchar(45) NOT NULL,
+  `Dato` date NOT NULL,
+  `FK_idpatient3` int DEFAULT NULL,
+  PRIMARY KEY (`idGeolokation`),
+  UNIQUE KEY `idGeolokation_UNIQUE` (`idGeolokation`),
+  KEY `FK_idpatient2_idx` (`FK_idpatient3`),
+  CONSTRAINT `FK_idpatient3` FOREIGN KEY (`FK_idpatient3`) REFERENCES `Patient` (`idPatient`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Geolokation`
+--
+
+LOCK TABLES `Geolokation` WRITE;
+/*!40000 ALTER TABLE `Geolokation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Geolokation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Guideline`
+--
+
+DROP TABLE IF EXISTS `Guideline`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Guideline` (
+  `idGuideline` int NOT NULL,
+  `Opdateringer` varchar(45) NOT NULL,
+  `Vaccinationsplaner` varchar(45) NOT NULL,
+  `Informationer` varchar(45) NOT NULL,
+  `FK_idbeslutningstagere` int DEFAULT NULL,
+  PRIMARY KEY (`idGuideline`),
+  UNIQUE KEY `idGuideline_UNIQUE` (`idGuideline`),
+  KEY `FK_idbeslutningstagere_idx` (`FK_idbeslutningstagere`),
+  CONSTRAINT `FK_idbeslutningstagere` FOREIGN KEY (`FK_idbeslutningstagere`) REFERENCES `Beslutningstagere` (`idBeslutningstagere`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Guideline`
+--
+
+LOCK TABLES `Guideline` WRITE;
+/*!40000 ALTER TABLE `Guideline` DISABLE KEYS */;
+INSERT INTO `Guideline` VALUES (1,'Nye restriktioner','Vacinationstilbud på vej','Coronapas tilgængelig',1);
+/*!40000 ALTER TABLE `Guideline` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Informationer`
+--
+
+DROP TABLE IF EXISTS `Informationer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Informationer` (
+  `idInformationer` int NOT NULL,
+  `InfoNavn` varchar(45) NOT NULL,
+  `InfoDato` datetime NOT NULL,
+  `InfotType` varchar(45) NOT NULL,
+  `InfoLokation` varchar(45) NOT NULL,
+  `Infektionsrate` int NOT NULL,
+  `FK_idbeslutningstagere1` int DEFAULT NULL,
+  PRIMARY KEY (`idInformationer`),
+  UNIQUE KEY `idInformationer_UNIQUE` (`idInformationer`),
+  KEY `FK_idbeslutningstagere_idx` (`FK_idbeslutningstagere1`),
+  CONSTRAINT `FK_idbeslutningstagere1` FOREIGN KEY (`FK_idbeslutningstagere1`) REFERENCES `Beslutningstagere` (`idBeslutningstagere`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Informationer`
+--
+
+LOCK TABLES `Informationer` WRITE;
+/*!40000 ALTER TABLE `Informationer` DISABLE KEYS */;
+INSERT INTO `Informationer` VALUES (1,'Coronatal stiger','2020-02-03 00:00:00','Nye restriktioner','Region Hovedstaden',1000,1);
+/*!40000 ALTER TABLE `Informationer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Mutationn`
+--
+
+DROP TABLE IF EXISTS `Mutationn`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Mutationn` (
+  `idMutationn` int NOT NULL,
+  `MutationVariant` varchar(45) NOT NULL,
+  `Smittede_med_variant` int NOT NULL,
+  `Dato` date NOT NULL,
+  `FK_idbeslutningtagere3` int DEFAULT NULL,
+  PRIMARY KEY (`idMutationn`),
+  UNIQUE KEY `idMutationn_UNIQUE` (`idMutationn`),
+  KEY `FK_idbeslutningstagere3_idx` (`FK_idbeslutningtagere3`),
+  CONSTRAINT `FK_idbeslutningstagere3` FOREIGN KEY (`FK_idbeslutningtagere3`) REFERENCES `Beslutningstagere` (`idBeslutningstagere`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Mutationn`
+--
+
+LOCK TABLES `Mutationn` WRITE;
+/*!40000 ALTER TABLE `Mutationn` DISABLE KEYS */;
+INSERT INTO `Mutationn` VALUES (1,'Britisk',122,'2020-05-31',3),(2,'Indisk',4,'2020-05-31',3),(3,'Sydafrikansk',53,'2020-05-31',3),(4,'Mink',19,'2020-05-31',3),(5,'Dansk',539,'2020-05-31',3),(6,'kinesisk',502,'2020-05-31',3),(7,'Spansk',39,'2020-05-31',3),(8,'Fransk',81,'2020-05-31',3),(9,'Tysk',92,'2020-05-31',3),(10,'Svensk',11,'2020-05-31',3),(11,'Brasiliansk',33,'2020-05-31',3),(12,'Italiansk',29,'2020-05-31',3);
+/*!40000 ALTER TABLE `Mutationn` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Patient`
+--
+
+DROP TABLE IF EXISTS `Patient`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Patient` (
+  `idPatient` int NOT NULL,
+  `Fuldenavn` varchar(45) NOT NULL,
+  `CPR-nummer` varchar(45) NOT NULL,
+  `Adresse` varchar(45) NOT NULL,
+  `BrugerID` int NOT NULL,
+  `SensorData` float DEFAULT NULL,
+  `CoronaData` varchar(45) NOT NULL,
+  `Geolokation` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idPatient`),
+  UNIQUE KEY `idPatient_UNIQUE` (`idPatient`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Patient`
+--
+
+LOCK TABLES `Patient` WRITE;
+/*!40000 ALTER TABLE `Patient` DISABLE KEYS */;
+INSERT INTO `Patient` VALUES (1,'Hans Hansen','100993-0923','Københavnsgade 29',6220729,37,'Negativ','Amagerstrand'),(2,'Lene Nielsen','200153-1182','Holdudboulevard 28, 1.th',1284658,37.1,'Positiv','København N'),(3,'Victor Danmarksen','310500-1621','Parisgade 73',8373628,36.8,'Negativ','Randers C'),(4,'Henriette Ditlev','101076-1028','Nørrebrogade 282 5. tv',4838379,36.3,'Positiv','København N'),(5,'Oliver Ulrik','170291-0275','Amagerbrogade 29',4638292,36.1,'Positiv','København S'),(6,'Rasmus Pedersen','100130-4749','Vejle',2537265,37.2,'Negativ','Vejle C'),(7,'Maria Pen','280320-9122','Vesterbrogade 103 2. th',9384920,37.3,'Positiv','København V'),(8,'Sebatian Vingaard','020382-4739','Sjælør Boulevard 47',3648271,37,'Negativ','København V'),(9,'Lisa Lollo','011293-4708','Sydhavnsvej 28',4648292,38,'Positiv','København V'),(10,'Lise Larsen','011250-4724','Sydhavnsvej 28',4648292,38,'Positiv','København V'),(11,'Sofie Østergaard','270298-2072','lolvej 23',2836482,37,'Negativ','Næstved'),(12,'Kasper Winther','300996-3857','Sylvestervej 20',4947362,37,'Negativ','Faarup');
+/*!40000 ALTER TABLE `Patient` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `PatientJournal`
+--
+
+DROP TABLE IF EXISTS `PatientJournal`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `PatientJournal` (
+  `idJournal` int NOT NULL,
+  `Anamnese` varchar(45) DEFAULT NULL,
+  `Vaccinationer` varchar(45) DEFAULT NULL,
+  `Medicinliste` varchar(45) DEFAULT NULL,
+  `Prøvesvar` varchar(45) DEFAULT NULL,
+  `Henvisninger` varchar(45) DEFAULT NULL,
+  `Diagnoser` varchar(45) DEFAULT NULL,
+  `FK_idpatient4` int DEFAULT NULL,
+  `FK_idsundhedsprofessionellee` int DEFAULT NULL,
+  PRIMARY KEY (`idJournal`),
+  UNIQUE KEY `idJournal_UNIQUE` (`idJournal`),
+  UNIQUE KEY `FK_idsundhedsprofessionellee_UNIQUE` (`FK_idsundhedsprofessionellee`),
+  KEY `FK_idpatient4_idx` (`FK_idpatient4`),
+  CONSTRAINT `FK_idpatient4` FOREIGN KEY (`FK_idpatient4`) REFERENCES `Patient` (`idPatient`),
+  CONSTRAINT `FK_idsundhedsprofessionellee` FOREIGN KEY (`FK_idsundhedsprofessionellee`) REFERENCES `Sundhedsprofessionelle` (`idSundhedsprofessionelle`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `PatientJournal`
+--
+
+LOCK TABLES `PatientJournal` WRITE;
+/*!40000 ALTER TABLE `PatientJournal` DISABLE KEYS */;
+/*!40000 ALTER TABLE `PatientJournal` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Rapporterr`
+--
+
+DROP TABLE IF EXISTS `Rapporterr`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Rapporterr` (
+  `idRapporterr` int NOT NULL,
+  `Antal_smittede` int NOT NULL,
+  `Antal_testprøver` int NOT NULL,
+  `Antal_raskmeldte` int NOT NULL,
+  `Antal_indlagte` int NOT NULL,
+  `Antal_intensive` int NOT NULL,
+  `Antal_i_respirator` int NOT NULL,
+  `Indlagte_kvinder` int NOT NULL,
+  `Indlagte_mænd` int NOT NULL,
+  `Dødelighed` int NOT NULL,
+  `RapportDato` datetime NOT NULL,
+  `FK_idbeslutningstagere2` int DEFAULT NULL,
+  PRIMARY KEY (`idRapporterr`),
+  UNIQUE KEY `idRapporterr_UNIQUE` (`idRapporterr`),
+  KEY `FK_idsundhedsprofessionelle1_idx` (`FK_idbeslutningstagere2`),
+  CONSTRAINT `FK_idsundhedsprofessionelle2` FOREIGN KEY (`FK_idbeslutningstagere2`) REFERENCES `Beslutningstagere` (`idBeslutningstagere`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Rapporterr`
+--
+
+LOCK TABLES `Rapporterr` WRITE;
+/*!40000 ALTER TABLE `Rapporterr` DISABLE KEYS */;
+INSERT INTO `Rapporterr` VALUES (1,273038,32093338,120373,122,30,21,88,34,2512,'2020-05-04 00:00:00',1),(2,273508,32096803,120310,123,31,21,88,34,2512,'2020-06-04 00:00:00',1);
+/*!40000 ALTER TABLE `Rapporterr` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Samtykke`
+--
+
+DROP TABLE IF EXISTS `Samtykke`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Samtykke` (
+  `idSamtykke` int NOT NULL,
+  `SensorData` varchar(45) DEFAULT NULL,
+  `Geolokation` varchar(45) DEFAULT NULL,
+  `FK_idpatient1` int DEFAULT NULL,
+  PRIMARY KEY (`idSamtykke`),
+  UNIQUE KEY `idSamtykke_UNIQUE` (`idSamtykke`),
+  KEY `PK_idpatient1_idx` (`FK_idpatient1`),
+  CONSTRAINT `FK_idpatient1` FOREIGN KEY (`FK_idpatient1`) REFERENCES `Patient` (`idPatient`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Samtykke`
+--
+
+LOCK TABLES `Samtykke` WRITE;
+/*!40000 ALTER TABLE `Samtykke` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Samtykke` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `SensorData`
+--
+
+DROP TABLE IF EXISTS `SensorData`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `SensorData` (
+  `idSensorData` int NOT NULL,
+  `Puls` int DEFAULT NULL,
+  `Temperatur` float DEFAULT NULL,
+  `Blodtryk` int DEFAULT NULL,
+  `EKG` int DEFAULT NULL,
+  `Dato` date DEFAULT NULL,
+  `FK_idpatient` int DEFAULT NULL,
+  PRIMARY KEY (`idSensorData`),
+  UNIQUE KEY `idSensorData_UNIQUE` (`idSensorData`),
+  KEY `FK_idpatient_idx` (`FK_idpatient`),
+  CONSTRAINT `FK_idpatient` FOREIGN KEY (`FK_idpatient`) REFERENCES `Patient` (`idPatient`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `SensorData`
+--
+
+LOCK TABLES `SensorData` WRITE;
+/*!40000 ALTER TABLE `SensorData` DISABLE KEYS */;
+/*!40000 ALTER TABLE `SensorData` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Sundhedsprofessionelle`
+--
+
+DROP TABLE IF EXISTS `Sundhedsprofessionelle`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Sundhedsprofessionelle` (
+  `idSundhedsprofessionelle` int NOT NULL,
+  `BrugerID` int NOT NULL,
+  `Fuldenavn` varchar(45) NOT NULL,
+  `Position` varchar(45) NOT NULL,
+  PRIMARY KEY (`idSundhedsprofessionelle`),
+  UNIQUE KEY `idSundhedsprofessionelle_UNIQUE` (`idSundhedsprofessionelle`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Sundhedsprofessionelle`
+--
+
+LOCK TABLES `Sundhedsprofessionelle` WRITE;
+/*!40000 ALTER TABLE `Sundhedsprofessionelle` DISABLE KEYS */;
+INSERT INTO `Sundhedsprofessionelle` VALUES (1,27523,'Sten Sørensen','Sygeplejerske');
+/*!40000 ALTER TABLE `Sundhedsprofessionelle` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Testt`
+--
+
+DROP TABLE IF EXISTS `Testt`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Testt` (
+  `idTestt` int NOT NULL,
+  `Teststed` varchar(45) NOT NULL,
+  `Testtype` varchar(45) NOT NULL,
+  `Testresultat` varchar(45) NOT NULL,
+  `Dato` date NOT NULL,
+  `FK_idsundhedsprofessionelle3` int DEFAULT NULL,
+  PRIMARY KEY (`idTestt`),
+  UNIQUE KEY `idTestt_UNIQUE` (`idTestt`),
+  KEY `FK_idsundhedsprofessionelle3_idx` (`FK_idsundhedsprofessionelle3`),
+  CONSTRAINT `FK_idsundhedsprofessionelle3` FOREIGN KEY (`FK_idsundhedsprofessionelle3`) REFERENCES `Sundhedsprofessionelle` (`idSundhedsprofessionelle`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Testt`
+--
+
+LOCK TABLES `Testt` WRITE;
+/*!40000 ALTER TABLE `Testt` DISABLE KEYS */;
+INSERT INTO `Testt` VALUES (1,'Righospitalet','PCR-test','positiv','2020-05-31',1),(2,'Bellacenteret','kviktest','negative','2020-05-31',1),(3,'Nørreport','kvik-test','negativ','2020-05-31',1),(4,'Nørreport','kvik-test','negativ','2020-05-31',1),(5,'Nørreport','kvik-test','negativ','2020-05-31',1),(6,'Nørreport','kvik-test','positiv','2020-05-31',1),(7,'Købnehavn N','kvik-test','negativ','2020-05-31',1),(8,'Købnehavn N','kvik-test','negativ','2020-05-31',1),(9,'Hvidovrevej','PCR-test','negativ','2020-05-31',1),(10,'Hvidovrevej','PCR-test','negativ','2020-05-31',1),(11,'Hvidovrevej','PCR-test','positiv','2020-05-31',1),(12,'Hvidovrevej','PCR-test','positiv','2020-05-31',1),(13,'Ishøj','PCR-test','negativ','2020-05-31',1),(14,'Ishøj','PCR-test','negativ','2020-05-31',1),(15,'Ishøj','PCR-test','negativ','2020-05-31',1),(16,'Amagerbro','kvik-test','negativ','2020-05-31',1),(17,'Amagerbro','kvik-test','negativ','2020-05-31',1),(18,'Jyllingevej','kvik-test','positiv','2020-05-31',1),(19,'Jyllingevej','kvik-test','positiv','2020-05-31',1),(20,'Jyllingevej','kvik-test','negativ','2020-05-31',1),(21,'Rødovre C','PCR-test','negativ','2020-05-31',1),(22,'Rødovre C','PCR-test','negativ','2020-05-31',1),(23,'Rødovre C','PCR-test','positiv','2020-05-31',1),(24,'Rødovre C','PCR-test','positiv','2020-05-31',1),(25,'Rødovre C','PCR-test','positiv','2020-05-31',1),(26,'Fisketorvet','kvik-test','negativ','2020-05-31',1),(27,'Fisketorvet','kvik-test','positiv','2020-05-31',1),(28,'Fisketorvet','kvik-test','positiv','2020-05-31',1),(29,'Fisketorvet','kvik-test','negativ','2020-05-31',1),(30,'Fisketorvet','kvik-test','negativ','2020-05-31',1);
+/*!40000 ALTER TABLE `Testt` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2021-06-01 20:47:21
